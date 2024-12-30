@@ -61,18 +61,17 @@ Make sure you have the following installed on your system:
 ```
 /pdf_viewer/
 ├── public/
-│   ├── favicon.ico           # Favicon for the webpage
-│   ├── index.html            # Main HTML file
-│   ├── runpdf.js             # Main JavaScript file
-│   └── style.css             # Styling for the viewer
+│   ├── image.png             # tab logo
+│   ├── index.html            # frontend
+│   ├── runpdf.js             # frontend logic
 ├── pdf_file/                 # Directory for storing PDF files
 │   ├── file1.pdf
 │   └── file2.pdf
 ├── pdfjs-dist/               # PDF.js library files
-│   ├── build/pdf.js
-│   ├── build/pdf.worker.js
-├── server.js                 # Node.js server
-└── README.md                 # Project documentation
+│   ├── build/pdf.mjs
+│   ├── build/pdf.worker.mjs
+├── server.js                 # Node.js backend server
+└── README.md                 
 ```
 
 ---
