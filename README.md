@@ -66,8 +66,8 @@ Make sure you have the following installed on your system:
 │   ├── runpdf.js             # Main JavaScript file
 │   └── style.css             # Styling for the viewer
 ├── pdf_file/                 # Directory for storing PDF files
-│   ├── example1.pdf
-│   └── example2.pdf
+│   ├── file1.pdf
+│   └── file2.pdf
 ├── pdfjs-dist/               # PDF.js library files
 │   ├── build/pdf.js
 │   ├── build/pdf.worker.js
@@ -95,7 +95,7 @@ Returns a list of available PDF files.
 
 #### Response Example:
 ```json
-["example1.pdf", "example2.pdf"]
+["file1.pdf", "file2.pdf"]
 ```
 
 ---
