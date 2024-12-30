@@ -61,7 +61,7 @@ Make sure you have the following installed on your system:
 ```
 /pdf_viewer/
 ├── public/
-│   ├── image.png             # tab logo
+│   ├── image.png             # GUI logo
 │   ├── index.html            # frontend
 │   ├── runpdf.js             # frontend logic
 ├── pdf_file/                 # Directory for storing PDF files
