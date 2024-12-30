@@ -102,7 +102,7 @@ Returns a list of available PDF files.
 ## Known Issues
 
 - Large PDF files may take time to load and render.
-- Ensure that `pdf.worker.js` is correctly referenced in `runpdf.js`.
+- Ensure that `pdf.worker.mjs` is correctly referenced in `runpdf.mjs`.
 
 ---
 
