@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我ok你ok嗎</title>
-  <link rel="icon" href="image.png" type="image/png">
+  <title>我OK你OK嗎</title>
   <style>
     #the-canvas {
       border: 1px solid black;
       width: 100%;
     }
+    #search-container {
+      margin-bottom: 20px;
+    }
+    #search-results div {
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
+  <!-- search -->
+  <div id="search-container">
+    <input type="text" id="global-search-box" placeholder="keyword">
+    <button id="global-search-button">search</button>
+  </div>  
+  <div id="search-results"></div>
+
+  <!-- PDF list -->
   <div id="pdf-selection">
-    <label for="pdf-list">Select a PDF file:</label>
+    <label for="pdf-list">choose a PDF file:</label>
     <select id="pdf-list"></select>
     <button id="open-pdf">OPEN</button>
   </div>
+
+  <!-- PDF render -->
   <div id="pdf-viewer" style="display: none;">
     <div>
-      <button id="prev">PREV</button>
-      <button id="next">NEXT</button>
-      <button id="close-pdf">BACK</button>
+      <button id="prev">Prev</button>
+      <button id="next">Next</button>
+      <button id="close-pdf">Back</button>
       <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
     </div>
     <canvas id="the-canvas"></canvas>
-  </div>  
+  </div>
   <script type="module" src="runpdf.js"></script>
 </body>
-
 </html>
