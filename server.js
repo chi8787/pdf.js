@@ -2,20 +2,19 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const pdfParse = require('pdf-parse');
-const pdfjsLib = require('pdfjs-dist');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3010;
 
 app.get('/api/search', async (req, res) => {
   const keyword = req.query.keyword;
   if (!keyword) {
-    return res.status(400).json({ error: 'plz type the keywiord' });
+    return res.status(400).json({ error: 'Please type a keyword' });
   }
 
   const pdfDir = path.join(__dirname, 'pdf_file');
   if (!fs.existsSync(pdfDir)) {
-    return res.status(500).json({ error: 'PDF not exist' });
+    return res.status(500).json({ error: 'PDF directory does not exist' });
   }
 
   const files = fs.readdirSync(pdfDir).filter(file => file.endsWith('.pdf'));
@@ -25,35 +24,38 @@ app.get('/api/search', async (req, res) => {
     try {
       const filePath = path.join(pdfDir, file);
       const dataBuffer = fs.readFileSync(filePath);
-
+      
       const pagesWithKeyword = await findPagesWithKeyword(dataBuffer, keyword);
 
-      results.push({
-        fileName: file,
-        snippet: pagesWithKeyword.length > 0 ? `searched! "${keyword}"` : '',
-        pages: pagesWithKeyword,
-      });
+      if (pagesWithKeyword.length > 0) {
+        results.push({
+          fileName: file,
+          snippet: `Found "${keyword}" on pages: ${pagesWithKeyword.join(', ')}`,
+          pages: pagesWithKeyword
+        });
+      }
     } catch (error) {
-      console.error(`reading ${file} problem:`, error);
+      console.error(`Error reading file ${file}:`, error);
     }
+  }
+
+  if (results.length === 0) {
+    return res.json({ message: 'No relevant files found' });
   }
 
   res.json(results);
 });
 
 async function findPagesWithKeyword(buffer, keyword) {
-  const pdfDoc = await pdfjsLib.getDocument({ data: buffer }).promise;
+  const pdfData = await pdfParse(buffer);
+  const textByPage = pdfData.text.split(/\f/); // Split by form feed (page break)
   const pages = [];
 
-  for (let i = 1; i <= pdfDoc.numPages; i++) {
-    const page = await pdfDoc.getPage(i);
-    const textContent = await page.getTextContent();
-    const pageText = textContent.items.map(item => item.str).join(' ');
-
-    if (pageText.includes(keyword)) {
-      pages.push(i);
+  textByPage.forEach((pageText, index) => {
+    if (pageText.toLowerCase().includes(keyword.toLowerCase())) {
+      pages.push(index + 1); // Page numbers are 1-based
     }
-  }
+  });
 
   return pages;
 }
@@ -61,7 +63,7 @@ async function findPagesWithKeyword(buffer, keyword) {
 app.get('/api/pdf-files', (req, res) => {
   const pdfDir = path.join(__dirname, 'pdf_file');
   if (!fs.existsSync(pdfDir)) {
-    return res.status(500).send('PDF doesn\'t exist');
+    return res.status(500).send('PDF directory does not exist');
   }
 
   const files = fs.readdirSync(pdfDir).filter(file => file.endsWith('.pdf'));
@@ -69,8 +71,9 @@ app.get('/api/pdf-files', (req, res) => {
 });
 
 app.use(express.static(path.join(__dirname)));
+
 app.use((req, res) => {
-  res.status(404).send('route not exist (404)');
+  res.status(404).send('Route does not exist (404)');
 });
 
 app.listen(PORT, () => {
